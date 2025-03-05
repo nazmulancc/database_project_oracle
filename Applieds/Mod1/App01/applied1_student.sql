@@ -53,7 +53,7 @@ INSERT INTO student (
     studphone,
     studemail
 ) VALUES (
-    12489379,
+    12489389,
     'Gilberto',
     'Bwy',
     TO_DATE('30-Aug-1992', 'dd-Mon-yyyy'),

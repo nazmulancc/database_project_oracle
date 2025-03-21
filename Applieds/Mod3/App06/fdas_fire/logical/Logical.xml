@@ -1,0 +1,7 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<LogicalDesign class="oracle.dbtools.crest.model.design.logical.LogicalDesign" name="Logical" id="1DA1EE2E-98D0-1B1A-E519-8BEA8E12DBBB" mainViewID="6A7D88EE-9FC9-F482-A28E-D1FE844F1330">
+<createdBy>nazmu</createdBy>
+<createdTime>2025-03-21 10:39:26 UTC</createdTime>
+<ownerDesignName>fdas_fire</ownerDesignName>
+<shouldBeOpen>false</shouldBeOpen>
+</LogicalDesign>

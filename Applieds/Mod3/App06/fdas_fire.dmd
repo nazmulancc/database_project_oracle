@@ -1,0 +1,8 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<OSDM_Design class="oracle.dbtools.crest.model.design.Design" name="fdas_fire" id="2670251C-5084-144A-8983-51E5F81C0BEB" version="3.5">
+<createdBy>nazmu</createdBy>
+<createdTime>2025-03-21 10:39:26 UTC</createdTime>
+<ownerDesignName>fdas_fire</ownerDesignName>
+<capitalNames>false</capitalNames>
+<designId>2670251C-5084-144A-8983-51E5F81C0BEB</designId>
+</OSDM_Design>

@@ -6,11 +6,23 @@
 <autoRoute>false</autoRoute>
 <boxInbox>true</boxInbox>
 <showLegend>false</showLegend>
-<showLabels>false</showLabels>
+<showLabels>true</showLabels>
 <showRelAttributes>false</showRelAttributes>
 <gridEnabled>false</gridEnabled>
 <showGrid>false</showGrid>
 <diagramColor>-1</diagramColor>
 <display>false</display>
-<notation>1</notation>
+<notation>2</notation>
+<showAllDetails>false</showAllDetails>
+<showElements>true</showElements>
+<objectViews>
+<OView class="oracle.dbtools.crest.swingui.logical.TVEntity" oid="1A07F60A-F8A1-73AC-4436-A1B5A3124916" otype="Entity" vid="372933E8-0D5E-83E0-27CD-38B20D27FAB7">
+<hideElementsInCurrentOnly>false</hideElementsInCurrentOnly>
+<bounds x="55" y="63" width="170" height="110"/>
+</OView>
+<OView class="oracle.dbtools.crest.swingui.logical.TVEntity" oid="67958842-F56F-F128-AA7E-EE0880BEA342" otype="Entity" vid="5CC1D429-0B39-2B85-6F1C-8BF4E2EF8A43">
+<hideElementsInCurrentOnly>false</hideElementsInCurrentOnly>
+<bounds x="432" y="63" width="170" height="110"/>
+</OView>
+</objectViews>
 </Diagram>

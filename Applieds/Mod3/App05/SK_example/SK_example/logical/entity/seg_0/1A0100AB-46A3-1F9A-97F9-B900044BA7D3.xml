@@ -1,0 +1,61 @@
+<?xml version = '1.0' encoding = 'UTF-8'?>
+<Entity class="oracle.dbtools.crest.model.design.logical.Entity" directorySegmentName="seg_0" id="1A0100AB-46A3-1F9A-97F9-B900044BA7D3" name="TRAINING">
+<createdBy>nazmu</createdBy>
+<createdTime>2025-03-22 14:05:22 UTC</createdTime>
+<ownerDesignName>SK_example</ownerDesignName>
+<engineerTo>
+<item key="A2B1BBC2-4B7A-1527-8197-F934E716762A" value="true"/>
+</engineerTo>
+<adequatelyNormalized>NO</adequatelyNormalized>
+<expectedVolumes>0</expectedVolumes>
+<fwdEngineeringStrategyName>Single Table</fwdEngineeringStrategyName>
+<growthPercent>0</growthPercent>
+<growthType>Year</growthType>
+<maxVolumes>9999999</maxVolumes>
+<minVolumes>0</minVolumes>
+<normalForm>Third</normalForm>
+<attributes itemClass="oracle.dbtools.crest.model.design.logical.Attribute">
+<Attribute name="training_code" id="71D52C7A-3163-4EF8-FE96-33827AA66AF5">
+<createdBy>nazmu</createdBy>
+<createdTime>2025-03-22 14:05:34 UTC</createdTime>
+<commentInRDBMS><![CDATA[training code PK]]></commentInRDBMS>
+<ownerDesignName>SK_example</ownerDesignName>
+<engineerTo>
+<item key="A2B1BBC2-4B7A-1527-8197-F934E716762A" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>7</dataTypePrecision>
+<ownDataTypeParameters>,7,</ownDataTypeParameters>
+</Attribute>
+<Attribute name="training_name" id="2ACD34AE-8281-7E4E-7037-9D126A874C87">
+<createdBy>nazmu</createdBy>
+<createdTime>2025-03-22 14:06:04 UTC</createdTime>
+<commentInRDBMS><![CDATA[name of the training]]></commentInRDBMS>
+<ownerDesignName>SK_example</ownerDesignName>
+<engineerTo>
+<item key="A2B1BBC2-4B7A-1527-8197-F934E716762A" value="true"/>
+</engineerTo>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT024</logicalDatatype>
+<dataTypeSize>10</dataTypeSize>
+<ownDataTypeParameters>10,,</ownDataTypeParameters>
+</Attribute>
+</attributes>
+<identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
+<identifier id="F4B7DCFA-FFA3-7C08-F3DE-5974D3BEAC0C" name="TRAINING PK">
+<createdBy>nazmu</createdBy>
+<createdTime>2025-03-22 14:05:44 UTC</createdTime>
+<ownerDesignName>SK_example</ownerDesignName>
+<engineerTo>
+<item key="A2B1BBC2-4B7A-1527-8197-F934E716762A" value="true"/>
+</engineerTo>
+<pk>true</pk>
+<usedAttributes>
+<attributeRef>71D52C7A-3163-4EF8-FE96-33827AA66AF5</attributeRef>
+</usedAttributes>
+</identifier>
+</identifiers>
+</Entity>

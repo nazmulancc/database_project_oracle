@@ -43,6 +43,22 @@
 <dataTypePrecision>7</dataTypePrecision>
 <ownDataTypeParameters>,7,</ownDataTypeParameters>
 </Attribute>
+<Attribute name="cust_no" id="AC5D829F-F635-743C-818D-9BE432FD7B83">
+<createdBy>nazmu</createdBy>
+<createdTime>2025-03-22 13:34:04 UTC</createdTime>
+<commentInRDBMS><![CDATA[custoemr number]]></commentInRDBMS>
+<generatorID>F1CFF901-5D98-03E9-EBAB-473811708B9D</generatorID>
+<ownerDesignName>cust_order</ownerDesignName>
+<engineerTo>
+<item key="E3645A60-A5D4-B447-3075-4044F6A58515" value="true"/>
+</engineerTo>
+<referedAttribute>D9BADD97-5F62-CD93-E75D-B2E5EF91C363</referedAttribute>
+<useDomainConstraints>false</useDomainConstraints>
+<use>1</use>
+<logicalDatatype>LOGDT019</logicalDatatype>
+<dataTypePrecision>7</dataTypePrecision>
+<ownDataTypeParameters>,,</ownDataTypeParameters>
+</Attribute>
 </attributes>
 <identifiers itemClass="oracle.dbtools.crest.model.design.logical.CandidateKey">
 <identifier id="9C3C5B67-ECFC-E8A7-03FC-8D22B51BE32C" name="ORDER PK">

@@ -1,7 +1,7 @@
 
 SET ECHO ON
 
-SPOOL applied6_schema.txt
+SPOOL applied63_schema.txt
 
 /*
 Databases Applied 6
@@ -26,6 +26,9 @@ DROP TABLE student CASCADE CONSTRAINTS PURGE;
 
 DROP TABLE unit CASCADE CONSTRAINTS PURGE;
 
+DROP TABLE course CASCADE CONSTRAINTS PURGE;
+
+DROP TABLE course_unit CASCADE CONSTRAINTS PURGE;
 -- Create Tables
 -- Here using both table and column constraints
 --
@@ -109,6 +112,49 @@ ALTER TABLE enrolment ADD CONSTRAINT unit_enrolment_fk FOREIGN KEY ( unit_code) 
 
 ALTER TABLE enrolment ADD CONSTRAINT chk_enrol_semester CHECK (enrol_semester IN ('1', '2', '3'));
 
+
+ALTER TABLE unit
+ADD (
+    credit_points NUMBER(2) DEFAULT 6 NOT NULL,
+    CONSTRAINT unit_credit_points_chk CHECK (credit_points IN (3, 6, 12))
+);
+
+COMMENT ON COLUMN unit.credit_points IS
+    'Unit credit points (must be 3, 6 or 12)';
+
+
+    -- Create COURSE table
+CREATE TABLE course (
+    course_code CHAR(5) NOT NULL,
+    course_name VARCHAR2(100) NOT NULL,
+    course_totalpoints NUMBER(4) NOT NULL,
+    CONSTRAINT course_pk PRIMARY KEY (course_code),
+    CONSTRAINT course_code_format_chk CHECK (REGEXP_LIKE(course_code, '^[A-Z][0-9]{4}$')),
+    CONSTRAINT course_totalpoints_chk CHECK (course_totalpoints > 0)
+);
+
+COMMENT ON COLUMN course.course_code IS
+    'Course code (format: A9999)';
+COMMENT ON COLUMN course.course_name IS
+    'Full course name';
+COMMENT ON COLUMN course.course_totalpoints IS
+    'Total credit points required for course completion';
+
+-- Create junction table for course-unit relationship
+CREATE TABLE course_unit (
+    course_code CHAR(5) NOT NULL,
+    unit_code CHAR(7) NOT NULL,
+    CONSTRAINT course_unit_pk PRIMARY KEY (course_code, unit_code),
+    CONSTRAINT course_unit_course_fk FOREIGN KEY (course_code)
+        REFERENCES course(course_code),
+    CONSTRAINT course_unit_unit_fk FOREIGN KEY (unit_code)
+        REFERENCES unit(unit_code)
+);
+
+COMMENT ON COLUMN course_unit.course_code IS
+    'Course code reference';
+COMMENT ON COLUMN course_unit.unit_code IS
+    'Unit code reference';
 
 SPOOL OFF
 

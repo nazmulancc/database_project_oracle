@@ -1,0 +1,298 @@
+SQL> 
+SQL> /*
+SQL>Databases Applied 6
+SQL>applied6_schema.sql
+SQL>
+SQL>student id:34273654
+SQL>student name: Nazmul    
+SQL>last modified date: 24.03.2025
+SQL>
+SQL>*/
+SQL> 
+SQL> -- DDL for Student-Unit-Enrolment model (using ALTER TABLE)
+SQL> --
+SQL> 
+SQL> --
+SQL> -- Place DROP commands at head of schema file
+SQL> --
+SQL> 
+SQL> DROP TABLE enrolment CASCADE CONSTRAINTS PURGE;
+
+Table ENROLMENT dropped.
+
+SQL> 
+SQL> DROP TABLE student CASCADE CONSTRAINTS PURGE;
+
+Table STUDENT dropped.
+
+SQL> 
+SQL> DROP TABLE unit CASCADE CONSTRAINTS PURGE;
+
+Table UNIT dropped.
+
+SQL> 
+SQL> DROP TABLE course CASCADE CONSTRAINTS PURGE;
+
+Error starting at line : 29 in command -
+DROP TABLE course CASCADE CONSTRAINTS PURGE
+Error report -
+ORA-00942: table or view does not exist
+
+https://docs.oracle.com/error-help/db/ora-00942/00942. 00000 -  "table or view%s does not exist"
+*Cause:    The specified table or view did not exist, or a synonym
+           pointed to a table or view that did not exist.
+           To find existing user tables and views, query the
+           ALL_TABLES and ALL_VIEWS data dictionary views. Certain
+           privileges may be required to access the table. If an
+           application returned this message, then the table that the
+           application tried to access did not exist in the database, or
+           the application did not have access to it.
+*Action:   Check each of the following
+           - The spelling of the table or view name is correct.
+           - The referenced table or view name does exist.
+           - The synonym points to an existing table or view.
+SQL> 
+SQL> DROP TABLE course_unit CASCADE CONSTRAINTS PURGE;
+
+Error starting at line : 31 in command -
+DROP TABLE course_unit CASCADE CONSTRAINTS PURGE
+Error report -
+ORA-00942: table or view does not exist
+
+https://docs.oracle.com/error-help/db/ora-00942/00942. 00000 -  "table or view%s does not exist"
+*Cause:    The specified table or view did not exist, or a synonym
+           pointed to a table or view that did not exist.
+           To find existing user tables and views, query the
+           ALL_TABLES and ALL_VIEWS data dictionary views. Certain
+           privileges may be required to access the table. If an
+           application returned this message, then the table that the
+           application tried to access did not exist in the database, or
+           the application did not have access to it.
+*Action:   Check each of the following
+           - The spelling of the table or view name is correct.
+           - The referenced table or view name does exist.
+           - The synonym points to an existing table or view.
+SQL> -- Create Tables
+SQL> -- Here using both table and column constraints
+SQL> --
+SQL> 
+SQL> CREATE TABLE student (
+  2      stu_nbr     NUMBER(8) NOT NULL,
+  3      stu_lname   VARCHAR2(50) NOT NULL,
+  4      stu_fname   VARCHAR2(50) NOT NULL,
+  5      stu_dob     DATE NOT NULL
+  6  );
+
+Table STUDENT created.
+
+SQL> 
+SQL> COMMENT ON COLUMN student.stu_nbr IS
+  2      'Student number';
+
+Comment created.
+
+SQL> 
+SQL> COMMENT ON COLUMN student.stu_lname IS
+  2      'Student last name';
+
+Comment created.
+
+SQL> 
+SQL> COMMENT ON COLUMN student.stu_fname IS
+  2      'Student first name';
+
+Comment created.
+
+SQL> 
+SQL> COMMENT ON COLUMN student.stu_dob IS
+  2      'Student date of birth';
+
+Comment created.
+
+SQL> 
+SQL> /* Add STUDENT constraints here */
+SQL> ALTER TABLE student ADD CONSTRAINT student_pk PRIMARY KEY (stu_nbr);
+
+Table STUDENT altered.
+
+SQL> ALTER TABLE student ADD CONSTRAINT chk_student_nbr CHECK (stu_nbr > 10000000 );
+
+Table STUDENT altered.
+
+SQL> 
+SQL> 
+SQL> /* Add UNIT data types here */
+SQL> CREATE TABLE unit (
+  2      unit_code   CHAR(7) NOT NULL,
+  3      unit_name   VARCHAR2(50) NOT NULL
+  4  );
+
+Table UNIT created.
+
+SQL> 
+SQL> COMMENT ON COLUMN unit.unit_code IS
+  2      'Unit code';
+
+Comment created.
+
+SQL> 
+SQL> COMMENT ON COLUMN unit.unit_name IS
+  2      'Unit name';
+
+Comment created.
+
+SQL> 
+SQL> /* Add UNIT constraints here */
+SQL> ALTER TABLE unit ADD CONSTRAINT unit_pk PRIMARY KEY (unit_code);
+
+Table UNIT altered.
+
+SQL> ALTER TABLE unit ADD CONSTRAINT uq_unit_name UNIQUE (unit_name);
+
+Table UNIT altered.
+
+SQL> 
+SQL> /* Add ENROLMENT attributes and data types here */
+SQL> CREATE TABLE enrolment (
+  2      stu_nbr         NUMBER(8) NOT NULL,
+  3      unit_code       CHAR(7) NOT NULL,
+  4      enrol_year      NUMBER(7) NOT NULL,
+  5      enrol_semester  CHAR(1) NOT NULL,
+  6      enrol_mark      NUMBER(3),
+  7      enrol_grade     CHAR(2)
+  8  );
+
+Table ENROLMENT created.
+
+SQL> 
+SQL> COMMENT ON COLUMN enrolment.stu_nbr IS
+  2      'Student number';
+
+Comment created.
+
+SQL> 
+SQL> COMMENT ON COLUMN enrolment.unit_code IS
+  2      'Unit code';
+
+Comment created.
+
+SQL> 
+SQL> COMMENT ON COLUMN enrolment.enrol_year IS
+  2      'Enrolment year';
+
+Comment created.
+
+SQL> 
+SQL> COMMENT ON COLUMN enrolment.enrol_semester IS
+  2      'Enrolment semester';
+
+Comment created.
+
+SQL> 
+SQL> COMMENT ON COLUMN enrolment.enrol_mark IS
+  2      'Enrolment mark (real)';
+
+Comment created.
+
+SQL> 
+SQL> COMMENT ON COLUMN enrolment.enrol_grade IS
+  2      'Enrolment grade (letter)';
+
+Comment created.
+
+SQL> 
+SQL> /* Add ENROLMENT constraints here */
+SQL> ALTER TABLE enrolment ADD CONSTRAINT enrolment_pk PRIMARY KEY ( stu_nbr,
+  2                                                                  unit_code,
+  3                                                                  enrol_year,
+  4                                                                  enrol_semester);
+
+Table ENROLMENT altered.
+
+SQL> 
+SQL> ALTER TABLE enrolment ADD CONSTRAINT student_enrolment_fk FOREIGN KEY ( stu_nbr) REFERENCES student (stu_nbr);
+
+Table ENROLMENT altered.
+
+SQL> ALTER TABLE enrolment ADD CONSTRAINT unit_enrolment_fk FOREIGN KEY ( unit_code) REFERENCES unit (unit_code);
+
+Table ENROLMENT altered.
+
+SQL> 
+SQL> ALTER TABLE enrolment ADD CONSTRAINT chk_enrol_semester CHECK (enrol_semester IN ('1', '2', '3'));
+
+Table ENROLMENT altered.
+
+SQL> 
+SQL> 
+SQL> ALTER TABLE unit
+  2  ADD (
+  3      credit_points NUMBER(2) DEFAULT 6 NOT NULL,
+  4      CONSTRAINT unit_credit_points_chk CHECK (credit_points IN (3, 6, 12))
+  5  );
+
+Table UNIT altered.
+
+SQL> 
+SQL> COMMENT ON COLUMN unit.credit_points IS
+  2      'Unit credit points (must be 3, 6 or 12)';
+
+Comment created.
+
+SQL> 
+SQL> 
+SQL>     -- Create COURSE table
+SQL> CREATE TABLE course (
+  2      course_code CHAR(5) NOT NULL,
+  3      course_name VARCHAR2(100) NOT NULL,
+  4      course_totalpoints NUMBER(4) NOT NULL,
+  5      CONSTRAINT course_pk PRIMARY KEY (course_code),
+  6      CONSTRAINT course_code_format_chk CHECK (REGEXP_LIKE(course_code, '^[A-Z][0-9]{4}$')),
+  7      CONSTRAINT course_totalpoints_chk CHECK (course_totalpoints > 0)
+  8  );
+
+Table COURSE created.
+
+SQL> 
+SQL> COMMENT ON COLUMN course.course_code IS
+  2      'Course code (format: A9999)';
+
+Comment created.
+
+SQL> COMMENT ON COLUMN course.course_name IS
+  2      'Full course name';
+
+Comment created.
+
+SQL> COMMENT ON COLUMN course.course_totalpoints IS
+  2      'Total credit points required for course completion';
+
+Comment created.
+
+SQL> 
+SQL> -- Create junction table for course-unit relationship
+SQL> CREATE TABLE course_unit (
+  2      course_code CHAR(5) NOT NULL,
+  3      unit_code CHAR(7) NOT NULL,
+  4      CONSTRAINT course_unit_pk PRIMARY KEY (course_code, unit_code),
+  5      CONSTRAINT course_unit_course_fk FOREIGN KEY (course_code)
+  6          REFERENCES course(course_code),
+  7      CONSTRAINT course_unit_unit_fk FOREIGN KEY (unit_code)
+  8          REFERENCES unit(unit_code)
+  9  );
+
+Table COURSE_UNIT created.
+
+SQL> 
+SQL> COMMENT ON COLUMN course_unit.course_code IS
+  2      'Course code reference';
+
+Comment created.
+
+SQL> COMMENT ON COLUMN course_unit.unit_code IS
+  2      'Unit code reference';
+
+Comment created.
+
+SQL> 
+SQL> SPOOL OFF

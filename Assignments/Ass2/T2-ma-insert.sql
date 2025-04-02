@@ -66,16 +66,41 @@ INSERT INTO service_job VALUES (109, 2, 'Alternator test');
 INSERT INTO service_job VALUES (110, 1, 'AC refrigerant recharge');
 
 
-  COMMIT;
-
-
 --  INSERTING into PART_CHARGE
+
+  -- Service 101
+  INSERT INTO part_charge VALUES (1, 1, 15.58, 101, 1, 'WR2419');
+  INSERT INTO part_charge VALUES (2, 2, 51.78, 101, 1, '341490');
+  -- Service 102
+  INSERT INTO part_charge VALUES (3, 1, 89.95, 102, 2, 'DB1849');
+  
+  -- Service 103
+  INSERT INTO part_charge VALUES (4, 1, 45.00, 103, 1, '341490');
+  
+  -- Service 104
+  INSERT INTO part_charge VALUES (5, 1, 65.00, 104, 1, 'ONE2-5');
+  INSERT INTO part_charge VALUES (6, 1, 32.50, 104, 2, 'R2132P');
+  
+  -- Service 105
+  INSERT INTO part_charge VALUES (7, 1, 38.00, 105, 1, 'ONE2-5');
+  
+  -- Service 106
+  INSERT INTO part_charge VALUES (8, 4, 120.00, 106, 1, 'FR8HDC');
+  
+  -- Service 109
+  INSERT INTO part_charge VALUES (9, 1, 85.00, 109, 2, 'TIM333');
+  
+  -- Service 110
+  INSERT INTO part_charge VALUES (10, 1, 95.00, 110, 1, 'TIM333');
+
+COMMIT;
+
 
 
 SELECT
     *
 FROM
-    service_job;
+    service;
 
 
 

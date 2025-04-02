@@ -93,14 +93,8 @@ INSERT INTO service_job VALUES (110, 1, 'AC refrigerant recharge');
   -- Service 110
   INSERT INTO part_charge VALUES (10, 1, 95.00, 110, 1, 'TIM333');
 
+
 COMMIT;
-
-
-
-SELECT
-    *
-FROM
-    service;
 
 
 

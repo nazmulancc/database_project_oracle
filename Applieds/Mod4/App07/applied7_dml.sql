@@ -130,6 +130,37 @@ INSERT INTO enrolment (stu_nbr, unit_code, enrol_year, enrol_semester) VALUES (1
 COMMIT;
 
 
+---==INSERT using SEQUENCEs ==--
+/*1. Create a sequence for the STUDENT table called STUDENT_SEQ */
+CREATE SEQUENCE student_nbr_seq START WITH 11111115 INCREMENT BY 1;
+
+
+/*2. Add a new student (MICKEY MOUSE) and an enrolment for this student as listed below, 
+treat all the data that you add as a single transaction. */
+
+
+INSERT INTO student VALUES (
+    student_nbr_seq.NEXTVAL,
+    'Mouse',
+    'Mickey',
+    to_date('03-Feb-2004','dd-Mon-yyyy')
+);
+
+
+INSERT INTO enrolment VALUES (
+    student_nbr_seq.CURRVAL,
+    'FIT9132',
+    2023,
+    '1',
+    NULL,
+    NULL
+);
+
+-- end of single transaction
+COMMIT;
+
+
+
 SELECT
     *
 FROM
@@ -138,20 +169,7 @@ FROM
 SELECT
     *
 FROM
-    unit;
-
-SELECT
-    *
-FROM
     enrolment;
-
----==INSERT using SEQUENCEs ==--
-/*1. Create a sequence for the STUDENT table called STUDENT_SEQ */
-
-/*2. Add a new student (MICKEY MOUSE) and an enrolment for this student as listed below, 
-treat all the data that you add as a single transaction. */
-
-
 ---==Advanced INSERT==--
 /*1. A new student has started a course. Subsequently this new student needs to enrol into 
 Introduction to databases. Enter the new student's details, then insert his/her enrollment 
@@ -163,22 +181,159 @@ You must not do a manual lookup to find the unit code of the Introduction to Dat
 and the student number.
  */
 
+
+INSERT INTO student VALUES (
+    student_nbr_seq.NEXTVAL,
+    'Last',
+    'First',
+    to_date('01-Jan-2005','dd-Mon-yyyy')
+);
+
+COMMIT;
+
+
+-- Add an enrolment (separate transaction)
+
+INSERT INTO enrolment VALUES (
+    (
+        SELECT
+            stu_nbr
+        FROM
+            student
+        WHERE
+            upper(stu_lname) = upper('Last')
+            AND upper(stu_fname) = upper('First')
+    ),
+    (
+        SELECT
+            unit_code
+        FROM
+            unit
+        WHERE
+            upper(unit_name) = upper('Introduction to Databases')
+    ),
+    2023,
+    '1',
+    NULL,
+    NULL
+);
+
+COMMIT;
+
+SELECT
+    *
+FROM
+    student;
+
+SELECT
+    *
+FROM
+    enrolment;
+
+
 ---=Creating a table and inserting data as a single SQL statement==--
 /*1. Create a table called FIT5111_STUDENT. The table should contain all enrolments for the 
 unit FIT5111 */
 
-/*2. Check the table exists */
 
+DROP TABLE fit5111_student PURGE;
+
+CREATE TABLE fit5111_student
+    AS
+        SELECT
+            *
+        FROM
+            enrolment
+        WHERE
+            upper(unit_code) = upper('FIT5111');
+
+COMMENT ON COLUMN fit5111_student.stu_nbr IS
+    'Student number';
+
+COMMENT ON COLUMN fit5111_student.unit_code IS
+    'Unit code';
+
+COMMENT ON COLUMN fit5111_student.enrol_year IS
+    'Enrolment year';
+
+COMMENT ON COLUMN fit5111_student.enrol_semester IS
+    'Enrolment semester';
+
+COMMENT ON COLUMN fit5111_student.enrol_mark IS
+    'Enrolment mark (real)';
+
+COMMENT ON COLUMN fit5111_student.enrol_grade IS
+    'Enrolment grade (letter)';
+ 
+ COMMIT;
+
+/*2. Check the table exists */
+SELECT
+    *
+FROM
+    cat;
 
 /*3. List the contents of the table */
 
+SELECT
+    *
+FROM
+    fit5111_student;
 ---==8.2.5 UPDATE==--
 /*1. Update the unit name of FIT9999 from 'FIT Last Unit' to 'place holder unit'.*/
 
 
+SELECT
+    *
+FROM
+    unit;
+
+UPDATE unit
+SET
+    unit_name = 'place holder unit'
+WHERE
+    upper(unit_code) = 'FIT9999';
+
+COMMIT;
+
+
+SELECT
+    *
+FROM
+    unit;
+    
+/*2 */
+SELECT
+    *
+FROM
+    enrolment;
 /*2. Enter the mark and grade for the student with the student number of 11111113 
 for Introduction to Databases that the student enrolled in semester 1 of 2023. 
 The mark is 75 and the grade is D.*/
+
+UPDATE enrolment
+SET
+    enrol_mark = 75,
+    enrol_grade = 'D'
+WHERE
+        stu_nbr = 11111113
+    AND enrol_semester = '1'
+    AND enrol_year = 2023
+    AND unit_code = (
+        SELECT
+            unit_code
+        FROM
+            unit
+        WHERE
+            upper(unit_name) = upper('Introduction to Databases')
+    );
+
+COMMIT;
+
+SELECT
+    *
+FROM
+    enrolment;
 
 
 /*3. The university introduced a new grade classification scale. 
@@ -192,7 +347,17 @@ The new classification are:
 Change the database to reflect the new grade classification scale.
 */
 
+UPDATE ENROLMENT set ENROL_GRADE = 
+CASE
+    WHEN ENROL_MARK BETWEEN 0 and 44 then 'N'
+    WHEN ENROL_MARK BETWEEN 45 and 54 then 'P1'
+    WHEN ENROL_MARK BETWEEN 55 and 64 then 'P2'
+    WHEN ENROL_MARK BETWEEN 65 and 74 then 'C'
+    WHEN ENROL_MARK BETWEEN 75 and 84 then 'D'
+    WHEN ENROL_MARK BETWEEN 85 and 100 then 'HD'
+    END;
 
+COMMIT;
 /*4. Due to the new regulation, the Faculty of IT decided to change 'Project' unit code 
 from FIT9161 into FIT5161. Change the database to reflect this situation.
 Note: you need to disable the FK constraint before you do the modification 
@@ -200,6 +365,52 @@ then enable the FK to have it active again.
 */
 
 
+SELECT
+    *
+FROM
+    unit;
+
+SELECT
+    *
+FROM
+    enrolment;
+
+/* A direct update statement on unit table will return error 
+"integrity constraint (AAA.STUDENT_ENROLMENT_FK) violated - child record found".
+
+Thus, you need to use the ALTER TABLE statement to disable 
+the FOREIGN KEY constraint first and then enable it back.*/
+
+
+ALTER TABLE enrolment DISABLE CONSTRAINT unit_enrolment_fk;
+
+UPDATE enrolment
+SET
+    unit_code = 'FIT5161'
+WHERE
+    upper(unit_code) = upper('FIT9161');
+
+UPDATE unit
+SET
+    unit_code = 'FIT5161'
+WHERE
+    upper(unit_code) = upper('FIT9161');
+
+COMMIT;
+
+
+SELECT
+    *
+FROM
+    unit;
+
+SELECT
+    *
+FROM
+    enrolment;
+
+
+ALTER TABLE enrolment ENABLE CONSTRAINT unit_enrolment_fk;
 
 --==DELETE==--
 /*1. A student with student number 11111114 has taken intermission in semester 1 2023, 
@@ -207,12 +418,83 @@ hence all the enrolment of this student for semester 1 2023 should be removed.
 Change the database to reflect this situation.*/
 
 
+DELETE FROM enrolment
+WHERE
+        stu_nbr = 11111114
+    AND enrol_semester = '1'
+    AND enrol_year = 2023;
+        
+COMMIT;
+
+SELECT
+    *
+FROM
+    enrolment;
+
 /*2. The faculty decided to remove all Student's Life unit's enrolments. 
 Change the database to reflect this situation.
 Note: unit names are unique in the database.*/
 
+SELECT
+    *
+FROM
+    unit;
+
+
+UPDATE unit
+SET
+    unit_name = 'Student''s Life'
+WHERE
+    upper(unit_code) = 'FIT5111';
+
+COMMIT;
+
+
+DELETE FROM enrolment
+WHERE
+    unit_code = (
+        SELECT
+            unit_code
+        FROM
+            unit
+        WHERE
+            upper(unit_name) = upper('Student''s Life')
+    );
+
+COMMIT;
+
+SELECT * FROM ENROLMENT;
 
 /*3. Assume that Wendy Wheat (student number 11111113) has withdrawn from the university. 
 Remove her details from the database.*/
+
+SELECT * FROM STUDENT;
+SELECT * FROM ENROLMENT;
+
+DELETE FROM student
+WHERE
+    stu_nbr = 11111113;
+
+-- so, child records need to be deleted first and then the parent record:
+
+DELETE FROM enrolment
+WHERE
+    stu_nbr = 11111113;
+
+DELETE FROM student
+WHERE
+    stu_nbr = 11111113;
+
+COMMIT;
+
+SELECT
+    *
+FROM
+    student;
+
+SELECT
+    *
+FROM
+    enrolment;
 
 

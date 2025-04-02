@@ -8,12 +8,9 @@
 /* Comments for your marker:
 
 -- Monash Automotive (MA) Data Insert Script
-Author: Nazmul Hasan
-License: Copyright Nazmul Hasan, unless otherwise stated. All Rights Reserved.
-COPYRIGHT WARNING
-Warning
-This material is protected by copyright. NOT FOR RESALE.
-Do not remove this notice. 
+student id:34273654
+student name: Nazmul Hasan 
+last modified date: 02.04.2025
 
 */
 

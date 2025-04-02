@@ -2,10 +2,9 @@
 Databases Applied 7
 applied7_dml.sql
 
-student id: 
-student name:
-last modified date:
-
+student id:34273654
+student name: Nazmul    
+last modified date: 02.04.2025
 */
 
 

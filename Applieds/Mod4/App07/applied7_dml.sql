@@ -329,6 +329,7 @@ WHERE
 
 COMMIT;
 
+
 SELECT
     *
 FROM

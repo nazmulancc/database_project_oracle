@@ -36,7 +36,37 @@ INSERT INTO service VALUES (103, TO_DATE('22/02/2023', 'DD/MM/YYYY'), TO_DATE('1
 
 -- INSERTING into SERVICE_JOB
 
+-- Service 101 (1 job)
+INSERT INTO service_job VALUES (101, 1, 'Standard service');
+-- Service 102 (2 jobs)
+INSERT INTO service_job VALUES (102, 1, 'Brake inspection');
+INSERT INTO service_job VALUES (102, 2, 'Brake pad replacement');
+-- Service 103 (1 job)
+INSERT INTO service_job VALUES (103, 1, 'Oil change');
+-- Service 104 (3 jobs)
+INSERT INTO service_job VALUES (104, 1, 'Transmission fluid change');
+INSERT INTO service_job VALUES (104, 2, 'Transmission filter replacement');
+INSERT INTO service_job VALUES (104, 3, 'Transmission diagnostic');
+-- Service 105 (1 job)
+INSERT INTO service_job VALUES (105, 1, 'Coolant system service');
+-- Service 106 (2 jobs)
+INSERT INTO service_job VALUES (106, 1, 'Spark plug replacement');
+INSERT INTO service_job VALUES (106, 2, 'Engine diagnostic');
+-- Service 107 (1 job)
+INSERT INTO service_job VALUES (107, 1, 'Wheel alignment');
+  
+-- Service 108 (1 job)
+INSERT INTO service_job VALUES (108, 1, 'Suspension inspection');
+  
+-- Service 109 (2 jobs)
+INSERT INTO service_job VALUES (109, 1, 'Battery check');
+INSERT INTO service_job VALUES (109, 2, 'Alternator test');
+  
+-- Service 110 (1 job)
+INSERT INTO service_job VALUES (110, 1, 'AC refrigerant recharge');
 
+
+  COMMIT;
 
 
 --  INSERTING into PART_CHARGE
@@ -45,7 +75,7 @@ INSERT INTO service VALUES (103, TO_DATE('22/02/2023', 'DD/MM/YYYY'), TO_DATE('1
 SELECT
     *
 FROM
-    service;
+    service_job;
 
 
 

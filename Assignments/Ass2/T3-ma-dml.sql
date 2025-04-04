@@ -135,9 +135,20 @@ WHERE veh_vin = (
     AND UPPER(veh_model) = 'CX-5'
 );
 
-
-SELECT * from SERVICE;
 /* (e) */
+
+DELETE FROM part
+WHERE vendor_id = (
+    SELECT vendor_id 
+    FROM vendor 
+    WHERE vendor_name = 'Australian Automotive Parts'
+)
+AND part_code NOT IN (
+    SELECT part_code 
+    FROM part_charge
+);
+
+COMMIT;
 
 
 

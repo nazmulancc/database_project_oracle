@@ -46,6 +46,15 @@ WHERE cust_no = (
 COMMIT;
 
 
+SELECT veh_rego
+FROM vehicle
+WHERE cust_no = (
+    SELECT cust_no 
+    FROM customer 
+    WHERE cust_phone = '6715573197'
+);
+
+SELECT * from VEHICLE;
 
 /* (c) */
 
@@ -99,6 +108,10 @@ SELECT * from service;
 
 
 
+SELECT
+    *
+FROM
+    service;
 /* (e) */
 
 

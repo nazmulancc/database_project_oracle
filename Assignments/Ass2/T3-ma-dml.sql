@@ -7,7 +7,7 @@
 
 /* Comments for your marker:
 
--- Monash Automotive (MA) Data Insert Script
+-- Monash Automotive (MA) Data Manipulation Script
 student id:34273654
 student name: Nazmul Hasan 
 last modified date: 04.04.2025

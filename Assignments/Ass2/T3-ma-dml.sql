@@ -10,7 +10,7 @@
 -- Monash Automotive (MA) Data Insert Script
 student id:34273654
 student name: Nazmul Hasan 
-last modified date: 03.04.2025
+last modified date: 04.04.2025
 
 */
 
@@ -26,7 +26,6 @@ DROP SEQUENCE part_charge_seq;
 CREATE SEQUENCE service_seq START WITH 1000 INCREMENT BY 10;
 CREATE SEQUENCE part_charge_seq START WITH 1000 INCREMENT BY 10;
 
-COMMIT;
 
 /* (b) */
 
@@ -46,18 +45,7 @@ WHERE cust_no = (
 COMMIT;
 
 
-SELECT veh_rego
-FROM vehicle
-WHERE cust_no = (
-    SELECT cust_no 
-    FROM customer 
-    WHERE cust_phone = '6715573197'
-);
-
-SELECT * from VEHICLE;
-
 /* (c) */
-
 
 INSERT INTO service (
     serv_no, 
@@ -71,9 +59,9 @@ INSERT INTO service (
     cust_no
 ) VALUES (
     service_seq.NEXTVAL,
-    TO_DATE('21-MAR-2024', 'DD-MON-YYYY'),
-    TO_DATE('21-MAR-2024 08:30', 'DD-MON-YYYY HH24:MI'),
-    TO_DATE('21-MAR-2024 12:00', 'DD-MON-YYYY HH24:MI'),
+    TO_DATE('21/03/2024', 'DD/MM/YYYY '),
+    TO_DATE('21/03/2024 08:30', 'DD/MM/YYYY HH24:MI'),
+    TO_DATE('21/03/2024 12:00', 'DD/MM/YYYY HH24:MI'),
     12000,
     'Rear seat belts are not properly retracting',
     'S',
@@ -98,20 +86,57 @@ INSERT INTO service_job (
 
 COMMIT;
 
-
-SELECT * from service;
-
-
-
 /* (d) */
 
+/* Update service job details */
+UPDATE service_job
+SET sj_task_description = 'Removed material causing jam in belt mechanism'
+WHERE serv_no = (
+    SELECT MAX(s.serv_no)
+    FROM service s
+    JOIN vehicle v ON s.veh_vin = v.veh_vin
+    WHERE v.cust_no = 1030
+    AND UPPER(v.veh_make) = 'MAZDA'
+    AND UPPER(v.veh_model) = 'CX-5'
+    AND s.serv_date = TO_DATE('21/03/2024', 'DD/MM/YYYY ')
+)
+AND sj_job_no = 1;
+
+/* Update service details */
+UPDATE service
+SET serv_ready_pickup = TO_DATE('21/03/2024 09:10', 'DD/MM/YYYY HH24:MI'),
+    serv_labour_cost = 0,
+    serv_parts_cost = 0
+WHERE serv_no = (
+    SELECT MAX(s.serv_no)
+    FROM service s
+    JOIN vehicle v ON s.veh_vin = v.veh_vin
+    WHERE v.cust_no = 1030
+    AND UPPER(v.veh_make) = 'MAZDA'
+    AND UPPER(v.veh_model) = 'CX-5'
+    AND s.serv_date = TO_DATE('21-Mar-2024', 'dd-Mon-yyyy')
+);
+
+COMMIT;
+
+-- viewing the times of drop off and pick up
+
+SELECT 
+    serv_no,
+    TO_CHAR(serv_drop_off, 'DD-Mon-YYYY HH24:MI') AS drop_off_time,
+    TO_CHAR(serv_req_pickup, 'DD-Mon-YYYY HH24:MI') AS requested_pickup_time,
+    TO_CHAR(serv_ready_pickup, 'DD-Mon-YYYY HH24:MI') AS actual_ready_time
+FROM service
+WHERE veh_vin = (
+    SELECT veh_vin 
+    FROM vehicle 
+    WHERE cust_no = 1030 
+    AND UPPER(veh_make) = 'MAZDA' 
+    AND UPPER(veh_model) = 'CX-5'
+);
 
 
-
-SELECT
-    *
-FROM
-    service;
+SELECT * from SERVICE;
 /* (e) */
 
 

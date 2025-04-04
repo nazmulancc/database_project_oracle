@@ -498,3 +498,10 @@ FROM
     enrolment;
 
 
+
+
+
+SELECT dt_code, AVG(drone_flight_time)
+ FROM  drone.drone
+ GROUP BY  dt_code
+ ORDER BY dt_code;

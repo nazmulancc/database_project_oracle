@@ -38,21 +38,18 @@ ON s.serv_no = sj.serv_no
 -- ENSURE that your query is formatted and has a semicolon
 -- (;) at the end of this answer
 
-SELECT p.part_code AS "PART_CODE",
-       p.part_description AS "PART_DESCRIPTION",
-       v.vendor_id
-       || '-'
-       || v.vendor_name AS "VENDOR",
-       p.part_stock AS "PART_STOCK",
-       '$'
-       || to_char(
-           p.part_unit_cost * p.part_stock,
-           '9990.99'
-       ) AS "STOCK_VALUE"
-  FROM part p
-  JOIN vendor v
-ON p.vendor_id = v.vendor_id
- ORDER BY p.part_code;
+ SELECT 
+    p.part_code AS "PART_CODE",
+    INITCAP(LOWER(p.part_description)) AS "PART_DESCRIPTION",
+    v.vendor_id || ' - ' || INITCAP(v.vendor_name) AS "VENDOR",
+    p.part_stock AS "PART_STOCK",
+    TO_CHAR(p.part_unit_cost * p.part_stock, 'FM$999,999.00') AS "STOCK_VALUE"
+FROM 
+    part p
+JOIN 
+    vendor v ON p.vendor_id = v.vendor_id
+ORDER BY 
+    p.part_code;
 
 
 /* (c) */
@@ -60,23 +57,26 @@ ON p.vendor_id = v.vendor_id
 -- ENSURE that your query is formatted and has a semicolon
 -- (;) at the end of this answer
 
-SELECT p.part_code AS "PART_CODE",
-       p.part_description AS "PART_DESCRIPTION",
-       v.vendor_name AS "VENDOR_NAME",
-       CASE
-           WHEN EXISTS (
-               SELECT 1
-                 FROM part_charge pc
-                WHERE pc.part_code = p.part_code
-           ) THEN
-               'Used in at least one service'
-           ELSE
-               'Not used in any service'
-       END AS "PARTUSAGE"
-  FROM part p
-  JOIN vendor v
-ON p.vendor_id = v.vendor_id
- ORDER BY p.part_code;
+ SELECT 
+    p.part_code AS "PART_CODE",
+    p.part_description AS "PART_DESCRIPTION",
+    v.vendor_name AS "VENDOR_NAME",
+    CASE
+        WHEN COUNT(pc.part_charge_no) > 0 THEN
+            'Used in at least one service'
+        ELSE
+            'Not used in any service'
+    END AS "PARTUSAGE"
+FROM 
+    part p
+JOIN 
+    vendor v ON p.vendor_id = v.vendor_id
+LEFT JOIN 
+    part_charge pc ON p.part_code = pc.part_code
+GROUP BY 
+    p.part_code, p.part_description, v.vendor_name
+ORDER BY 
+    p.part_code;
 
 /* (d) */
 -- PLEASE PLACE REQUIRED SQL SELECT STATEMENT FOR THIS PART HERE
@@ -105,7 +105,6 @@ ON p.part_code = pc.part_code
 -- PLEASE PLACE REQUIRED SQL SELECT STATEMENT FOR THIS PART HERE
 -- ENSURE that your query is formatted and has a semicolon
 -- (;) at the end of this answer
-
 
 SELECT s.cust_no AS "CUST_NO",
        c.cust_name AS "CUSTOMER NAME",

@@ -68,6 +68,25 @@ CREATE SEQUENCE parts_sale_seq START WITH 100 INCREMENT BY 1;
 
 /* (b )*/
 
+-- Add new columns to part table
+ALTER TABLE part ADD (
+    part_reorder_level NUMBER(3),
+    part_restock_date DATE
+);
 
+COMMENT ON COLUMN part.part_reorder_level IS
+    'Minimum stock level before reordering is required';
 
+COMMENT ON COLUMN part.part_restock_date IS
+    'Date when part was last restocked';
 
+-- Set initial values for existing parts
+UPDATE part
+SET 
+    part_reorder_level = CEIL(part_stock / 2),
+    part_restock_date = TO_DATE('01/01/2024', 'dd/Mon/yyyy')
+WHERE part_reorder_level IS NULL;
+
+-- Add constraint to ensure new parts have reorder level
+ALTER TABLE part MODIFY part_reorder_level NOT NULL;
+ALTER TABLE part MODIFY part_restock_date NOT NULL;

@@ -3,9 +3,9 @@
 --T6-ma-json.sql
 
 
---Student ID:
---Student Name:
-
+-- Student ID: 34273654
+--Student Name: Nazmul Hasan
+--last modified date: 07.04.2025
 
 /* Comments for your marker:
 

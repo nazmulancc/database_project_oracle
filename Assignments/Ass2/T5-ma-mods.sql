@@ -4,7 +4,7 @@
 
 -- Student ID: 34273654
 -- Student Name: Nazmul Hasan
--- last modified date: 07.04.2025
+-- last modified date: 12.04.2025
 
 /* Comments for your marker:
 
@@ -65,6 +65,9 @@ ALTER TABLE parts_sale_item ADD CONSTRAINT parts_sale_item_part_fk FOREIGN KEY (
 -- Create sequence for sale numbers starting at 100
 CREATE SEQUENCE parts_sale_seq START WITH 100 INCREMENT BY 1;
 
+COMMIT;
+
+SELECT * from PARTS_SALE;
 
 /* (b )*/
 
@@ -90,3 +93,6 @@ WHERE part_reorder_level IS NULL;
 -- Add constraint to ensure new parts have reorder level
 ALTER TABLE part MODIFY part_reorder_level NOT NULL;
 ALTER TABLE part MODIFY part_restock_date NOT NULL;
+
+
+COMMIT;

@@ -16,11 +16,10 @@
 
 /* (a) */
 
--- First drop the existing tables
+-- dropping the existing tables
 DROP TABLE parts_sale_item CASCADE CONSTRAINTS;
 DROP TABLE parts_sale CASCADE CONSTRAINTS;
 
--- Then run your original creation script
 
 CREATE TABLE parts_sale (
     sale_no    NUMBER(5) NOT NULL,
@@ -60,7 +59,7 @@ COMMENT ON COLUMN parts_sale_item.unit_price IS
 COMMENT ON COLUMN parts_sale_item.quantity IS
     'Quantity purchased (up to 99)';
 
--- Add primary and foreign keys
+
 ALTER TABLE parts_sale ADD CONSTRAINT parts_sale_pk PRIMARY KEY ( sale_no );
 ALTER TABLE parts_sale
     ADD CONSTRAINT parts_sale_customer_fk FOREIGN KEY ( cust_no )
@@ -81,8 +80,6 @@ CREATE SEQUENCE parts_sale_seq START WITH 100 INCREMENT BY 1;
 
 COMMIT;
 
-SELECT *
-  FROM parts_sale;
 
 /* (b )*/
 
